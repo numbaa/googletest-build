@@ -27,11 +27,11 @@ jobs:
       - name: Generate zip
         run: |
           echo ${{ github.sha }} > Release.txt
-          Compress-Archive -Path ./googletest/build/install/*,./Release.txt -DestinationPath googletest.zip
+          Compress-Archive -Path ./googletest/build/install/*,./Release.txt -DestinationPath googletest.${{ github.ref_name }}.zip
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: googletest.zip
+          files: googletest.${{ github.ref_name }}.zip
   Linux:
     permissions:
       contents: write
