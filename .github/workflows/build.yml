@@ -67,3 +67,31 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: googletest.linux.${{ github.ref_name }}.tar.gz
+  macOS:
+    permissions:
+      contents: write
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: google/googletest
+          ref: v1.13.0
+          path: googletest
+      - name: Build
+        run: |
+          cd googletest
+          mkdir build
+          cd build
+          cmake .. -B Release -DCMAKE_BUILD_TYPE=Release -Dgtest_force_shared_crt=ON
+          cmake --build Release
+          cmake --install Release --prefix install/Release
+      - name: Generate tar
+        run: |
+          echo ${{ github.sha }} > Release.txt
+          cp Release.txt ./googletest/build/install/Release
+          tar -czvf googletest.macos.${{ github.ref_name }}.tar.gz -C ./googletest/build/install/Release .
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: googletest.macos.${{ github.ref_name }}.tar.gz
