@@ -90,8 +90,8 @@ jobs:
         run: |
           echo ${{ github.sha }} > Release.txt
           cp Release.txt ./googletest/build/install/Release
-          tar -czvf googletest.macos.${{ github.ref_name }}.tar.gz -C ./googletest/build/install/Release .
+          tar -czvf googletest.mac.${{ github.ref_name }}.tar.gz -C ./googletest/build/install/Release .
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: googletest.macos.${{ github.ref_name }}.tar.gz
+          files: googletest.mac.${{ github.ref_name }}.tar.gz
